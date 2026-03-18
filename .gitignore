@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#NEVER FORGET TO ADD .env !!!!
+.env
