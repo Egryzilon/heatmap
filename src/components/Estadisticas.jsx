@@ -20,9 +20,9 @@ function Estadisticas() {
         <div>
           <h2 className="text-xl font-bold mb-4">Zona de Alta Incidencia (Top 3)</h2>
           <ul className="space-y-2 text-gray-700">
-            <li>1. SMZ 251 (Región 251)</li>
-            <li>2. SMZ 64 (Colonia Donceles)</li>
-            <li>3. SMZ 103 (Colonia Cuna Maya)</li>
+            <li>1. SMZ 251 (Región 241)</li>
+            <li>2. SMZ 64 (colocio ut xd)</li>
+            <li>3. SMZ 103 (cielo nuevo xddddddddddddddd)</li>
           </ul>
         </div>
       </div>
@@ -32,7 +32,7 @@ function Estadisticas() {
         <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105">
           Atrás
         </button>
-        <button className="px-6 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg shadow-md hover:from-red-600 hover:to-red-700 transition-all duration-200 transform hover:scale-105">
+        <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105">
           Volver al Mapa
         </button>
       </div>
