@@ -35,11 +35,8 @@ const topZonas = [
   { rank: 3, name: "SMZ 103", sub: "Cielo Nuevo",      count: 31, color: "#FBBF24" },
 ];
 
-// recharts inyecta active, payload y label automáticamente
-// si no hay punto activo no renderizamos nada
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
-
   return (
     <div style={{
       background: "white",
@@ -57,46 +54,140 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 function Estadisticas() {
-  // total calculado desde weekData, no hardcoded
   const total = weekData.reduce((acc, d) => acc + d.valor, 0);
 
   return (
     <>
       <style>{`
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+        }
+
         .stats-wrapper {
           min-height: 100vh;
           background: #FAFAFA;
           font-family: 'DM Sans', 'Segoe UI', sans-serif;
-          padding: clamp(20px, 4vw, 40px) clamp(16px, 5vw, 48px);
-          box-sizing: border-box;
+          /* en móvil padding chico, en desktop se abre */
+          padding: clamp(16px, 4vw, 40px) clamp(16px, 5vw, 48px);
         }
 
-        /* dos columnas en desktop */
-        .grid-2 {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 24px;
-          margin-bottom: 24px;
+        /* ── header ── */
+        .stats-header {
+          margin-bottom: 28px;
+          border-bottom: 2px solid #111;
+          padding-bottom: 18px;
         }
 
-        /* el area chart necesita más espacio que el donut */
-        .grid-charts {
-          display: grid;
-          grid-template-columns: 2fr 1fr;
-          gap: 24px;
-          margin-bottom: 24px;
+        .stats-badge-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 6px;
+          flex-wrap: wrap;
         }
 
+        .stats-badge {
+          background: #EF4444;
+          color: white;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          padding: 3px 10px;
+          border-radius: 4px;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .stats-title {
+          font-size: clamp(18px, 3.5vw, 28px);
+          font-weight: 800;
+          color: #111;
+          margin: 0;
+          letter-spacing: -0.5px;
+        }
+
+        /* ── cards ── */
         .card {
           background: white;
           border-radius: 16px;
-          padding: clamp(18px, 3vw, 28px) clamp(18px, 3vw, 32px);
+          /* padding se achica en móvil */
+          padding: clamp(16px, 3vw, 28px) clamp(16px, 3vw, 32px);
           border: 1px solid #E5E7EB;
           box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
 
+        .card-label {
+          font-size: 13px;
+          color: #6B7280;
+          font-weight: 500;
+          margin: 0 0 12px;
+        }
+
+        /* ── fila kpi + ranking ── */
+        .grid-top {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+          margin-bottom: 20px;
+        }
+
+        /* ── fila gráficas ── */
+        .grid-charts {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 20px;
+          margin-bottom: 20px;
+        }
+
+        /* ── kpi number ── */
+        .kpi-number {
+          font-size: clamp(36px, 7vw, 64px);
+          font-weight: 900;
+          color: #111;
+          line-height: 1;
+        }
+
+        .kpi-badge {
+          background: #FEE2E2;
+          color: #DC2626;
+          border-radius: 6px;
+          padding: 3px 9px;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        /* ── zona row ── */
+        .zona-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+
+        .zona-rank {
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          color: white;
+          font-size: 12px;
+          font-weight: 800;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        /* ── botones ── */
+        .btn-row {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
         .btn-back {
-          padding: 10px 28px;
+          padding: 10px 24px;
           background: white;
           color: #374151;
           border: 1.5px solid #D1D5DB;
@@ -105,6 +196,9 @@ function Estadisticas() {
           font-size: 14px;
           cursor: pointer;
           transition: border-color 0.15s, color 0.15s;
+          /* en móvil ocupa todo el ancho */
+          flex: 1;
+          min-width: 120px;
         }
         .btn-back:hover {
           border-color: #111;
@@ -112,7 +206,7 @@ function Estadisticas() {
         }
 
         .btn-map {
-          padding: 10px 28px;
+          padding: 10px 24px;
           background: #111;
           color: white;
           border: none;
@@ -121,16 +215,40 @@ function Estadisticas() {
           font-size: 14px;
           cursor: pointer;
           transition: background 0.15s;
+          flex: 1;
+          min-width: 120px;
         }
         .btn-map:hover {
           background: #374151;
         }
 
-        /* móvil: todo apilado en una columna */
+        /* ── tablet: 768px ── */
         @media (max-width: 768px) {
-          .grid-2,
+          .grid-top {
+            grid-template-columns: 1fr;
+          }
+
+          /* en tablet las gráficas van apiladas también */
           .grid-charts {
             grid-template-columns: 1fr;
+          }
+        }
+
+        /* ── móvil: 480px ── */
+        @media (max-width: 480px) {
+          .stats-wrapper {
+            padding: 16px;
+          }
+
+          /* los botones se apilan en pantallas muy chicas */
+          .btn-row {
+            flex-direction: column;
+          }
+
+          .btn-back,
+          .btn-map {
+            width: 100%;
+            text-align: center;
           }
         }
       `}</style>
@@ -138,83 +256,37 @@ function Estadisticas() {
       <div className="stats-wrapper">
 
         {/* header */}
-        <div style={{ marginBottom: "32px", borderBottom: "2px solid #111", paddingBottom: "20px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "6px" }}>
-            <span style={{
-              background: "#EF4444",
-              color: "white",
-              fontSize: "11px",
-              fontWeight: 700,
-              letterSpacing: "1.5px",
-              padding: "3px 10px",
-              borderRadius: "4px",
-              textTransform: "uppercase",
-            }}>
-              Vista 3 / 3
-            </span>
+        <div className="stats-header">
+          <div className="stats-badge-row">
+            <span className="stats-badge">Vista 3 / 3</span>
             <span style={{ color: "#9CA3AF", fontSize: "13px" }}>Análisis de Datos</span>
           </div>
-          <h1 style={{
-            fontSize: "clamp(20px, 3vw, 28px)",
-            fontWeight: 800,
-            color: "#111",
-            margin: 0,
-            letterSpacing: "-0.5px",
-          }}>
-            Estadísticas de la Ciudad
-          </h1>
+          <h1 className="stats-title">Estadísticas de la Ciudad</h1>
         </div>
 
         {/* kpi + ranking */}
-        <div className="grid-2">
+        <div className="grid-top">
 
-          {/* total semanal */}
           <div className="card">
-            <p style={{ fontSize: "13px", color: "#6B7280", fontWeight: 500, margin: "0 0 10px" }}>
-              Total — Últimos 7 días
-            </p>
-            <div style={{ fontSize: "clamp(42px, 6vw, 64px)", fontWeight: 900, color: "#111", lineHeight: 1 }}>
-              {total}
-            </div>
-            <div style={{ marginTop: "14px", display: "flex", gap: "8px", alignItems: "center" }}>
-              <span style={{
-                background: "#FEE2E2",
-                color: "#DC2626",
-                borderRadius: "6px",
-                padding: "3px 9px",
-                fontSize: "12px",
-                fontWeight: 700,
-              }}>
-                ▲ 12%
-              </span>
+            <p className="card-label">Total — Últimos 7 días</p>
+            <div className="kpi-number">{total}</div>
+            <div style={{ marginTop: "14px", display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+              <span className="kpi-badge">▲ 12%</span>
               <span style={{ fontSize: "12px", color: "#9CA3AF" }}>vs semana anterior</span>
             </div>
           </div>
 
-          {/* top 3 zonas */}
           <div className="card">
-            <p style={{ fontSize: "13px", color: "#6B7280", fontWeight: 500, margin: "0 0 16px" }}>
-              Zonas de Alta Incidencia — Top 3
-            </p>
+            <p className="card-label">Zonas de Alta Incidencia — Top 3</p>
             {topZonas.map(z => (
-              <div key={z.rank} style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
-                <span style={{
-                  width: "26px", height: "26px",
-                  background: z.color,
-                  borderRadius: "50%",
-                  color: "white",
-                  fontSize: "12px",
-                  fontWeight: 800,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  flexShrink: 0,
-                }}>
-                  {z.rank}
-                </span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700, fontSize: "14px", color: "#111" }}>{z.name}</div>
-                  <div style={{ fontSize: "12px", color: "#9CA3AF" }}>{z.sub}</div>
+              <div key={z.rank} className="zona-row">
+                <span className="zona-rank" style={{ background: z.color }}>{z.rank}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  {/* minWidth:0 evita overflow en textos largos dentro de grid */}
+                  <div style={{ fontWeight: 700, fontSize: "14px", color: "#111", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{z.name}</div>
+                  <div style={{ fontSize: "12px", color: "#9CA3AF", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{z.sub}</div>
                 </div>
-                <span style={{ fontWeight: 800, fontSize: "16px", color: z.color }}>{z.count}</span>
+                <span style={{ fontWeight: 800, fontSize: "16px", color: z.color, flexShrink: 0 }}>{z.count}</span>
               </div>
             ))}
           </div>
@@ -223,21 +295,17 @@ function Estadisticas() {
         {/* gráficas */}
         <div className="grid-charts">
 
-          {/* tendencia diaria — height fijo para que no se deforme en pantallas chicas */}
+          {/* tendencia diaria */}
           <div className="card">
-            <p style={{ fontSize: "13px", color: "#6B7280", fontWeight: 500, margin: "0 0 20px" }}>
-              Tendencia por Día de la Semana
-            </p>
+            <p className="card-label">Tendencia por Día de la Semana</p>
             <ResponsiveContainer width="100%" height={140}>
               <AreaChart data={weekData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-                {/* degradado para el relleno bajo la línea */}
                 <defs>
                   <linearGradient id="colorValor" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%"  stopColor="#EF4444" stopOpacity={0.2} />
                     <stop offset="95%" stopColor="#EF4444" stopOpacity={0}   />
                   </linearGradient>
                 </defs>
-                {/* sin axisLine ni tickLine para un look más limpio */}
                 <XAxis
                   dataKey="dia"
                   tick={{ fontSize: 11, fill: "#9CA3AF", fontWeight: 500 }}
@@ -258,11 +326,9 @@ function Estadisticas() {
             </ResponsiveContainer>
           </div>
 
-          {/* donut chart — innerRadius crea el hueco del centro */}
+          {/* donut — innerRadius crea el hueco */}
           <div className="card" style={{ display: "flex", flexDirection: "column" }}>
-            <p style={{ fontSize: "13px", color: "#6B7280", fontWeight: 500, margin: "0 0 8px" }}>
-              Distribución por Zona
-            </p>
+            <p className="card-label">Distribución por Zona</p>
             <div style={{ flex: 1 }}>
               <ResponsiveContainer width="100%" height={130}>
                 <PieChart>
@@ -308,7 +374,7 @@ function Estadisticas() {
         </div>
 
         {/* navegación */}
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+        <div className="btn-row">
           <button className="btn-back">← Atrás</button>
           <button className="btn-map">Volver al Mapa</button>
         </div>
