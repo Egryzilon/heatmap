@@ -29,10 +29,10 @@ function Estadisticas() {
 
       {/* Botones */}
       <div className="flex gap-4">
-        <button className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+        <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105">
           Atrás
         </button>
-        <button className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+        <button className="px-6 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg shadow-md hover:from-red-600 hover:to-red-700 transition-all duration-200 transform hover:scale-105">
           Volver al Mapa
         </button>
       </div>
