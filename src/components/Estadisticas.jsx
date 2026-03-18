@@ -4,11 +4,6 @@ function Estadisticas() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Estadísticas de la Ciudad</h1>
-        <div className="flex gap-2 mb-4">
-          <div className="w-16 h-1 bg-blue-500"></div>
-          <div className="w-16 h-1 bg-blue-500"></div>
-          <div className="w-16 h-1 bg-blue-500"></div>
-        </div>
         <p className="text-gray-600">Vista 3 de 3: Análisis de Datos</p>
       </div>
 
