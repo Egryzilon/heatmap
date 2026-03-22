@@ -1,17 +1,13 @@
-import Filtros from '../components/Filtros'
-import NuevoReporte from '../components/NuevoReporte'
-import Perfil from '../components/Perfil'
-import Estadisticas from '../components/Estadisticas'
 import CustomMap from '../components/CustomMap'
 function Dashboard() {
   return (
     <div className="w-screen h-screen absolute top-0 left-0">
       <header className='bg-[#141956]'>
-        <h1 className="text-left text-white text-2xl font-bold">SRC</h1>
-        <div className="bg-[#0B0F3B] relative border flex">
-          placeholder
-          <input className="bg-white rounded-sm absolute left-0 ml-5 pl-5 w-1/2 border"
-            type="text" placeholder="Buscar dirección, colonia, o tipo de delito" />
+        <h1 className="text-left text-white text-3xl p-5 font-bold">SRC</h1>
+        <div className="bg-[#0B0F3B] relative flex p-1">
+          <img src="https://www.svgrepo.com/show/521826/search.svg" alt="Lupa" width={30} className='absolute left-2 top-1/2 -translate-y-1/2 opacity-50'/>
+          <input className="bg-white rounded-sm w-1/3 pl-10 py-1 border"
+            type="text" placeholder="Buscar direccion, colonia, o tipo de delito... "/>
         </div>
       </header>
       <main className="h-9/10">
