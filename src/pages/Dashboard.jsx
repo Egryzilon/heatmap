@@ -8,17 +8,17 @@ function Dashboard() {
     <div className="w-screen h-screen absolute top-0 left-0">
       <header className='bg-[#141956]'>
         <h1 className="text-left text-white text-2xl font-bold">SRC</h1>
-              <div className="bg-[#0B0F3B] relative border flex">
-        placeholder
-        <input className="bg-white rounded-sm absolute left-0 ml-5 pl-5 w-1/2 border"
-          type="text" placeholder="Buscar dirección, colonia, o tipo de delito" />
-      </div>
+        <div className="bg-[#0B0F3B] relative border flex">
+          placeholder
+          <input className="bg-white rounded-sm absolute left-0 ml-5 pl-5 w-1/2 border"
+            type="text" placeholder="Buscar dirección, colonia, o tipo de delito" />
+        </div>
       </header>
-      <main className="content">
+      <main className="h-9/10">
         {/* aquí ir a lo de el mapa y los heat layers y eso*/}
-      <div className='border w-screen h-[40vw]'>
-        <CustomMap/>
-      </div>
+        <div className='border w-screen h-1/1'>
+          <CustomMap />
+        </div>
       </main>
       <footer className='bg-[#0B0F3B] grid grid-cols-3'>
         <p>Mapa</p>
