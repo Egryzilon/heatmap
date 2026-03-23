@@ -5,7 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 function CustomMap() {
     const mapRef = useRef(null);
     const mapContainerRef = useRef(null);
-    const accessToken = import.meta.env.VITE_MAPBOX_ACESS_TOKEN
+    const accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
     mapboxgl.accessToken = accessToken
     useEffect(() => {
         if (mapRef.current) return;
